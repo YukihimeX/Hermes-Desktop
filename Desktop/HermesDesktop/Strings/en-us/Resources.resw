@@ -268,10 +268,10 @@
     <value>Messaging gateways</value>
   </data>
   <data name="IntegrationsTitle.Text" xml:space="preserve">
-    <value>Discord and Telegram can sit on top of the same Hermes backend.</value>
+    <value>Telegram, Discord, Slack, WhatsApp, Matrix, and Webhook all share the same Hermes gateway.</value>
   </data>
   <data name="IntegrationsSubtitle.Text" xml:space="preserve">
-    <value>These cards show whether tokens are present in the current environment and where to go next.</value>
+    <value>Configure platform tokens below. The gateway reads from environment variables and config.yaml.</value>
   </data>
   <data name="IntegrationsTelegramTitle.Text" xml:space="preserve">
     <value>Telegram</value>
