@@ -14,6 +14,9 @@ public sealed partial class MainWindow : Window
         ["dashboard"] = typeof(DashboardPage),
         ["chat"] = typeof(ChatPage),
         ["agent"] = typeof(AgentPage),
+        ["skills"] = typeof(SkillsPage),
+        ["memory"] = typeof(MemoryPage),
+        ["buddy"] = typeof(BuddyPage),
         ["integrations"] = typeof(IntegrationsPage),
         ["settings"] = typeof(SettingsPage),
     };

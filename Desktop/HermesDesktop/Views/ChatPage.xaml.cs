@@ -658,30 +658,21 @@ Write the USER.md content now (markdown format, start with # User Profile):";
 
         SessionPanelView.Visibility = Visibility.Collapsed;
         FileBrowserPanelView.Visibility = Visibility.Collapsed;
-        SkillsPanelView.Visibility = Visibility.Collapsed;
-        MemoryPanelView.Visibility = Visibility.Collapsed;
         TaskPanelView.Visibility = Visibility.Collapsed;
-        BuddyPanelView.Visibility = Visibility.Collapsed;
         ReplayPanelView.Visibility = Visibility.Collapsed;
 
         var accent = GetBrush("AppAccentTextBrush");
         var muted = GetBrush("AppTextSecondaryBrush");
         TabSessions.Foreground = muted;
         TabFiles.Foreground = muted;
-        TabSkills.Foreground = muted;
-        TabMemory.Foreground = muted;
         TabTasks.Foreground = muted;
-        TabBuddy.Foreground = muted;
         TabReplay.Foreground = muted;
 
         switch (tag)
         {
             case "sessions": SessionPanelView.Visibility = Visibility.Visible; TabSessions.Foreground = accent; break;
             case "files": FileBrowserPanelView.Visibility = Visibility.Visible; TabFiles.Foreground = accent; break;
-            case "skills": SkillsPanelView.Visibility = Visibility.Visible; TabSkills.Foreground = accent; break;
-            case "memory": MemoryPanelView.Visibility = Visibility.Visible; TabMemory.Foreground = accent; break;
             case "tasks": TaskPanelView.Visibility = Visibility.Visible; TabTasks.Foreground = accent; break;
-            case "buddy": BuddyPanelView.Visibility = Visibility.Visible; TabBuddy.Foreground = accent; break;
             case "replay": ReplayPanelView.Visibility = Visibility.Visible; TabReplay.Foreground = accent; break;
         }
     }
