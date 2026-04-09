@@ -12,21 +12,48 @@
         <StackPanel Padding="32,24,32,40" Spacing="20">
             <Border Style="{StaticResource SurfaceCardStyle}">
                 <StackPanel Spacing="14">
-                    <TextBlock
-                        x:Uid="SettingsEyebrow"
-                        Style="{StaticResource PageEyebrowTextStyle}" />
-                    <TextBlock
-                        x:Uid="SettingsTitle"
-                        Style="{StaticResource PageTitleTextStyle}"
-                        MaxWidth="920" />
-                    <TextBlock
-                        x:Uid="SettingsSubtitle"
-                        Style="{StaticResource BodySecondaryTextStyle}"
-                        MaxWidth="920" />
+                    <TextBlock x:Uid="SettingsEyebrow" Style="{StaticResource PageEyebrowTextStyle}" />
+                    <TextBlock x:Uid="SettingsTitle" Style="{StaticResource PageTitleTextStyle}" MaxWidth="920" />
+                    <TextBlock x:Uid="SettingsSubtitle" Style="{StaticResource BodySecondaryTextStyle}" MaxWidth="920" />
                 </StackPanel>
             </Border>
 
-            <!-- Editable Model Configuration -->
+            <Border Style="{StaticResource SurfaceCardStyle}">
+                <StackPanel Spacing="16">
+                    <TextBlock Text="APPEARANCE" Style="{StaticResource SectionTitleTextStyle}" />
+                    <Grid ColumnSpacing="20">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Spacing="8">
+                            <TextBlock Text="THEME BRAND" Style="{StaticResource LabelTextStyle}"/>
+                            <ComboBox x:Name="BrandCombo" HorizontalAlignment="Stretch"
+                                      Background="{ThemeResource AppInsetBrush}"
+                                      BorderBrush="{ThemeResource AppStrokeBrush}"
+                                      SelectionChanged="BrandCombo_SelectionChanged">
+                                <ComboBoxItem Content="Gemini" Tag="gemini" IsSelected="True"/>
+                                <ComboBoxItem Content="Ollama" Tag="ollama"/>
+                                <ComboBoxItem Content="Claude" Tag="claude"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Spacing="8">
+                            <TextBlock Text="COLOR MODE" Style="{StaticResource LabelTextStyle}"/>
+                            <ComboBox x:Name="ThemeModeCombo" HorizontalAlignment="Stretch"
+                                      Background="{ThemeResource AppInsetBrush}"
+                                      BorderBrush="{ThemeResource AppStrokeBrush}"
+                                      SelectionChanged="ThemeModeCombo_SelectionChanged">
+                                <ComboBoxItem Content="Dark" Tag="Dark" IsSelected="True"/>
+                                <ComboBoxItem Content="Light" Tag="Light"/>
+                                <ComboBoxItem Content="System Default" Tag="Default"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
             <Grid ColumnSpacing="20">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -35,17 +62,13 @@
 
                 <Border Grid.Column="0" Style="{StaticResource SurfaceCardStyle}">
                     <StackPanel Spacing="16">
-                        <TextBlock
-                            x:Uid="SettingsRuntimeTitle"
-                            Style="{StaticResource SectionTitleTextStyle}" />
-
+                        <TextBlock x:Uid="SettingsRuntimeTitle" Style="{StaticResource SectionTitleTextStyle}" />
                         <StackPanel Spacing="12">
-                            <!-- Provider -->
                             <StackPanel Spacing="4">
                                 <TextBlock Text="PROVIDER" Style="{StaticResource LabelTextStyle}"/>
                                 <ComboBox x:Name="ProviderCombo" HorizontalAlignment="Stretch"
-                                          Background="{StaticResource AppInsetBrush}"
-                                          BorderBrush="{StaticResource AppStrokeBrush}"
+                                          Background="{ThemeResource AppInsetBrush}"
+                                          BorderBrush="{ThemeResource AppStrokeBrush}"
                                           SelectionChanged="ProviderCombo_SelectionChanged">
                                     <ComboBoxItem Content="Nous (OpenRouter)" Tag="nous"/>
                                     <ComboBoxItem Content="OpenAI" Tag="openai"/>
@@ -57,190 +80,43 @@
                                     <ComboBoxItem Content="Custom / Local" Tag="local"/>
                                 </ComboBox>
                             </StackPanel>
-
-                            <!-- Base URL -->
                             <StackPanel Spacing="4">
                                 <TextBlock Text="BASE URL" Style="{StaticResource LabelTextStyle}"/>
                                 <TextBox x:Name="BaseUrlBox" PlaceholderText="http://127.0.0.1:11434/v1"
-                                         Background="{StaticResource AppInsetBrush}"
-                                         BorderBrush="{StaticResource AppStrokeBrush}"
-                                         Foreground="White"/>
+                                         Background="{ThemeResource AppInsetBrush}"
+                                         BorderBrush="{ThemeResource AppStrokeBrush}" />
                             </StackPanel>
-
-                            <!-- Model Picker -->
                             <StackPanel Spacing="4">
                                 <TextBlock Text="MODEL" Style="{StaticResource LabelTextStyle}"/>
                                 <ComboBox x:Name="ModelCombo" HorizontalAlignment="Stretch"
-                                          Background="{StaticResource AppInsetBrush}"
-                                          BorderBrush="{StaticResource AppStrokeBrush}"
+                                          Background="{ThemeResource AppInsetBrush}"
+                                          BorderBrush="{ThemeResource AppStrokeBrush}"
                                           SelectionChanged="ModelCombo_SelectionChanged"/>
                                 <TextBox x:Name="ModelBox" PlaceholderText="Or type a custom model ID"
-                                         Background="{StaticResource AppInsetBrush}"
-                                         BorderBrush="{StaticResource AppStrokeBrush}"
-                                         Foreground="White"/>
+                                         Background="{ThemeResource AppInsetBrush}"
+                                         BorderBrush="{ThemeResource AppStrokeBrush}" />
                                 <TextBlock x:Name="ContextLengthLabel" FontSize="12"
-                                           Foreground="{StaticResource AppTextSecondaryBrush}"
+                                           Foreground="{ThemeResource AppTextSecondaryBrush}"
                                            Text="Context: --"/>
                             </StackPanel>
-
-                            <!-- API Key -->
                             <StackPanel Spacing="4">
                                 <TextBlock Text="API KEY" Style="{StaticResource LabelTextStyle}"/>
                                 <PasswordBox x:Name="ApiKeyBox" PlaceholderText="sk-... (leave blank for local)"
-                                             Background="{StaticResource AppInsetBrush}"
-                                             BorderBrush="{StaticResource AppStrokeBrush}"
-                                             Foreground="White"/>
+                                             Background="{ThemeResource AppInsetBrush}"
+                                             BorderBrush="{ThemeResource AppStrokeBrush}" />
                             </StackPanel>
-
-                            <!-- Save + Feedback -->
                             <StackPanel Orientation="Horizontal" Spacing="12">
                                 <Button x:Name="SaveModelBtn" Content="Save Model Config" Click="SaveModelConfig_Click"
-                                        Background="{StaticResource AppAccentGradientBrush}"
-                                        BorderBrush="{StaticResource AppAccentDarkBrush}"
+                                        Background="{ThemeResource AppAccentGradientBrush}"
+                                        BorderBrush="{ThemeResource AppAccentDarkBrush}"
                                         Foreground="#16110D" Padding="20,8"/>
                                 <TextBlock x:Name="ModelSaveStatus" VerticalAlignment="Center"
-                                           Foreground="{StaticResource AppTextSecondaryBrush}" FontSize="13"/>
+                                           Foreground="{ThemeResource AppTextSecondaryBrush}" FontSize="13"/>
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
                 </Border>
-
-                <Border Grid.Column="1" Style="{StaticResource SurfaceCardStyle}">
-                    <StackPanel Spacing="16">
-                        <TextBlock
-                            x:Uid="SettingsGatewayTitle"
-                            Style="{StaticResource SectionTitleTextStyle}" />
-                        <Grid ColumnSpacing="18" RowSpacing="14">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <TextBlock
-                                x:Uid="SettingsGatewayLine1"
-                                Grid.Row="0"
-                                Grid.Column="0"
-                                Style="{StaticResource LabelTextStyle}" />
-                            <TextBlock
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Text="{x:Bind TelegramStatus, Mode=OneTime}" />
-
-                            <TextBlock
-                                x:Uid="SettingsGatewayLine2"
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Style="{StaticResource LabelTextStyle}" />
-                            <TextBlock
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Text="{x:Bind DiscordStatus, Mode=OneTime}" />
-                        </Grid>
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <Border Style="{StaticResource SurfaceCardStyle}">
-                <StackPanel Spacing="16">
-                    <TextBlock
-                        x:Uid="SettingsPathsTitle"
-                        Style="{StaticResource SectionTitleTextStyle}" />
-                    <StackPanel Orientation="Horizontal" Spacing="12">
-                        <Button
-                            x:Uid="SettingsHomeButton"
-                            AccessKey="H"
-                            AutomationProperties.AutomationId="SettingsHomeButton"
-                            Background="{StaticResource AppInsetBrush}"
-                            BorderBrush="{StaticResource AppStrokeBrush}"
-                            Click="OpenHome_Click"
-                            Foreground="White" />
-                        <Button
-                            x:Uid="SettingsConfigButton"
-                            AccessKey="C"
-                            AutomationProperties.AutomationId="SettingsConfigButton"
-                            Background="{StaticResource AppInsetBrush}"
-                            BorderBrush="{StaticResource AppStrokeBrush}"
-                            Click="OpenConfig_Click"
-                            Foreground="White" />
-                        <Button
-                            x:Uid="SettingsLogsButton"
-                            AccessKey="G"
-                            AutomationProperties.AutomationId="SettingsLogsButton"
-                            Background="{StaticResource AppInsetBrush}"
-                            BorderBrush="{StaticResource AppStrokeBrush}"
-                            Click="OpenLogs_Click"
-                            Foreground="White" />
-                        <Button
-                            x:Uid="SettingsWorkspaceButton"
-                            AccessKey="R"
-                            AutomationProperties.AutomationId="SettingsWorkspaceButton"
-                            Background="{StaticResource AppInsetBrush}"
-                            BorderBrush="{StaticResource AppStrokeBrush}"
-                            Click="OpenWorkspace_Click"
-                            Foreground="White" />
-                    </StackPanel>
-                    <Grid ColumnSpacing="18" RowSpacing="14">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="140" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-
-                        <TextBlock
-                            x:Uid="DashboardHermesHomeLabel"
-                            Grid.Row="0"
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <TextBlock
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Text="{x:Bind HermesHomePath, Mode=OneTime}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            x:Uid="DashboardConfigLabel"
-                            Grid.Row="1"
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Text="{x:Bind HermesConfigPath, Mode=OneTime}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            x:Uid="DashboardLogsLabel"
-                            Grid.Row="2"
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <TextBlock
-                            Grid.Row="2"
-                            Grid.Column="1"
-                            Text="{x:Bind HermesLogsPath, Mode=OneTime}"
-                            TextWrapping="Wrap" />
-
-                        <TextBlock
-                            x:Uid="DashboardWorkspaceLabel"
-                            Grid.Row="3"
-                            Grid.Column="0"
-                            Style="{StaticResource LabelTextStyle}" />
-                        <TextBlock
-                            Grid.Row="3"
-                            Grid.Column="1"
-                            Text="{x:Bind HermesWorkspacePath, Mode=OneTime}"
-                            TextWrapping="Wrap" />
-                    </Grid>
-                </StackPanel>
-            </Border>
+                </Grid>
         </StackPanel>
     </ScrollViewer>
 </Page>
