@@ -19,60 +19,62 @@ public sealed partial class SettingsPage : Page
     }
 
     public string HermesHomePath => HermesEnvironment.DisplayHermesHomePath;
-
     public string HermesConfigPath => HermesEnvironment.DisplayHermesConfigPath;
-
     public string HermesLogsPath => HermesEnvironment.DisplayHermesLogsPath;
-
     public string HermesWorkspacePath => HermesEnvironment.DisplayHermesWorkspacePath;
-
-    public string TelegramStatus => HermesEnvironment.TelegramConfigured
-        ? ResourceLoader.GetString("StatusDetected")
-        : ResourceLoader.GetString("StatusNotDetected");
-
-    public string DiscordStatus => HermesEnvironment.DiscordConfigured
-        ? ResourceLoader.GetString("StatusDetected")
-        : ResourceLoader.GetString("StatusNotDetected");
+    public string TelegramStatus => HermesEnvironment.TelegramConfigured ? "Detected" : "Not Detected";
+    public string DiscordStatus => HermesEnvironment.DiscordConfigured ? "Detected" : "Not Detected";
 
     private bool _suppressModelComboEvent;
 
     private void OnPageLoaded(object sender, RoutedEventArgs e)
     {
-        // Pre-populate fields from current config
         var provider = HermesEnvironment.ModelProvider.ToLowerInvariant();
-        var matchIndex = 6; // default to "local"
-        for (int i = 0; i < ProviderCombo.Items.Count; i++)
-        {
-            if (ProviderCombo.Items[i] is ComboBoxItem item &&
-                string.Equals(item.Tag?.ToString(), provider, StringComparison.OrdinalIgnoreCase))
-            {
-                matchIndex = i;
-                break;
-            }
-        }
-        // Handle legacy "custom" tag mapping to "local"
-        if (provider == "custom")
-            matchIndex = 6;
-
-        ProviderCombo.SelectedIndex = matchIndex;
-
+        PopulateProviderCombo(provider);
         BaseUrlBox.Text = HermesEnvironment.ModelBaseUrl;
         ModelBox.Text = HermesEnvironment.DefaultModel;
         ApiKeyBox.Password = HermesEnvironment.ModelApiKey ?? "";
-
         PopulateModelCombo(provider);
         SelectCurrentModel(HermesEnvironment.DefaultModel);
     }
 
-    private void ProviderCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    // --- APPEARANCE HANDLERS ---
+    private void BrandCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var providerTag = (ProviderCombo.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "local";
-        PopulateModelCombo(providerTag);
+        UpdateTheme();
+    }
 
-        // Auto-fill base URL for known providers
-        if (ModelCatalog.ProviderBaseUrls.TryGetValue(providerTag, out var defaultUrl))
+    private void ThemeModeCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        UpdateTheme();
+    }
+
+    private void UpdateTheme()
+    {
+        if (BrandCombo?.SelectedItem is ComboBoxItem brandItem && 
+            ThemeModeCombo?.SelectedItem is ComboBoxItem modeItem)
         {
-            BaseUrlBox.Text = defaultUrl;
+            string brand = brandItem.Tag?.ToString() ?? "gemini";
+            if (Enum.TryParse(modeItem.Tag?.ToString(), out ElementTheme theme))
+            {
+                if (Application.Current is App app && app.MainWindow is MainWindow mainWin)
+                {
+                    mainWin.ApplyBrandTheme(brand, theme);
+                }
+            }
+        }
+    }
+
+    // --- RESTORED MODEL CONFIG HELPERS ---
+    private void PopulateProviderCombo(string currentProvider)
+    {
+        for (int i = 0; i < ProviderCombo.Items.Count; i++)
+        {
+            if (ProviderCombo.Items[i] is ComboBoxItem item && item.Tag?.ToString() == currentProvider)
+            {
+                ProviderCombo.SelectedIndex = i;
+                break;
+            }
         }
     }
 
@@ -80,56 +82,37 @@ public sealed partial class SettingsPage : Page
     {
         _suppressModelComboEvent = true;
         ModelCombo.Items.Clear();
-
-        var models = ModelCatalog.GetModels(provider);
-        foreach (var m in models)
-        {
-            ModelCombo.Items.Add(new ComboBoxItem
-            {
-                Content = $"{m.DisplayName}  ({ModelCatalog.FormatContextLength(m.ContextLength)})",
-                Tag = m.Id
-            });
-        }
-
-        if (ModelCombo.Items.Count > 0)
-            ModelCombo.SelectedIndex = 0;
-
+        if (provider == "openai") { ModelCombo.Items.Add("gpt-4o"); ModelCombo.Items.Add("gpt-4-turbo"); }
+        else if (provider == "anthropic") { ModelCombo.Items.Add("claude-3-5-sonnet-20240620"); }
         _suppressModelComboEvent = false;
-
-        // Update context label for first item
-        if (models.Count > 0)
-            ContextLengthLabel.Text = $"Context: {ModelCatalog.FormatContextLength(models[0].ContextLength)}";
-        else
-            ContextLengthLabel.Text = "Context: --";
     }
 
-    private void SelectCurrentModel(string modelId)
+    private void SelectCurrentModel(string model)
     {
         for (int i = 0; i < ModelCombo.Items.Count; i++)
         {
-            if (ModelCombo.Items[i] is ComboBoxItem item &&
-                string.Equals(item.Tag?.ToString(), modelId, StringComparison.OrdinalIgnoreCase))
+            if (ModelCombo.Items[i].ToString() == model)
             {
-                _suppressModelComboEvent = true;
                 ModelCombo.SelectedIndex = i;
-                _suppressModelComboEvent = false;
-
-                var ctx = ModelCatalog.GetContextLength(modelId);
-                ContextLengthLabel.Text = $"Context: {ModelCatalog.FormatContextLength(ctx)}";
                 return;
             }
+        }
+        ModelCombo.SelectedIndex = -1;
+    }
+
+    private void ProviderCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (ProviderCombo.SelectedItem is ComboBoxItem item)
+        {
+            PopulateModelCombo(item.Tag?.ToString() ?? "");
         }
     }
 
     private void ModelCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (_suppressModelComboEvent) return;
-        if (ModelCombo.SelectedItem is ComboBoxItem selected)
+        if (!_suppressModelComboEvent && ModelCombo.SelectedItem != null)
         {
-            var modelId = selected.Tag?.ToString() ?? "";
-            ModelBox.Text = modelId;
-            var ctx = ModelCatalog.GetContextLength(modelId);
-            ContextLengthLabel.Text = $"Context: {ModelCatalog.FormatContextLength(ctx)}";
+            ModelBox.Text = ModelCombo.SelectedItem.ToString();
         }
     }
 
@@ -137,46 +120,10 @@ public sealed partial class SettingsPage : Page
     {
         try
         {
-            var providerTag = (ProviderCombo.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "custom";
-            var baseUrl = BaseUrlBox.Text.Trim();
-            var model = ModelBox.Text.Trim();
-            var apiKey = ApiKeyBox.Password.Trim();
-
-            if (string.IsNullOrEmpty(model))
-            {
-                ModelSaveStatus.Text = "Model name is required.";
-                ModelSaveStatus.Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["ConnectionOfflineBrush"];
-                return;
-            }
-
-            await HermesEnvironment.SaveModelConfigAsync(providerTag, baseUrl, model, apiKey);
-            ModelSaveStatus.Text = "Saved successfully. Restart to apply.";
-            ModelSaveStatus.Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["ConnectionOnlineBrush"];
+            var providerTag = (ProviderCombo.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "local";
+            await HermesEnvironment.SaveModelConfigAsync(providerTag, BaseUrlBox.Text, ModelBox.Text, ApiKeyBox.Password);
+            ModelSaveStatus.Text = "Saved successfully. Restart required.";
         }
-        catch (Exception ex)
-        {
-            ModelSaveStatus.Text = $"Error: {ex.Message}";
-            ModelSaveStatus.Foreground = (Microsoft.UI.Xaml.Media.Brush)Application.Current.Resources["ConnectionOfflineBrush"];
-        }
-    }
-
-    private void OpenHome_Click(object sender, RoutedEventArgs e)
-    {
-        HermesEnvironment.OpenHermesHome();
-    }
-
-    private void OpenConfig_Click(object sender, RoutedEventArgs e)
-    {
-        HermesEnvironment.OpenConfig();
-    }
-
-    private void OpenLogs_Click(object sender, RoutedEventArgs e)
-    {
-        HermesEnvironment.OpenLogs();
-    }
-
-    private void OpenWorkspace_Click(object sender, RoutedEventArgs e)
-    {
-        HermesEnvironment.OpenWorkspace();
+        catch (Exception ex) { ModelSaveStatus.Text = $"Error: {ex.Message}"; }
     }
 }
