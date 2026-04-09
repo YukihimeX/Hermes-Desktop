@@ -1,5 +1,30 @@
 # Hermes Desktop
 
+## 🚀 Recent Enhancements in this Fork
+
+This fork introduces a significant architectural shift from a hardcoded visual identity to a **fully dynamic, multi-brand theme engine**.
+
+* **Dynamic Theme Engine**
+    * **Brand Switching**: Real-time switching between **Gemini**, **Ollama**, and **Claude** brand identities without restarting the application.
+    * **Full Mode Support**: Every brand identity fully supports both **Light** and **Dark** modes, integrated with the Windows System setting.
+    * **Reactive UI**: Migrated the entire design system from `StaticResource` to `ThemeResource` logic, allowing instant visual updates across all 8 pages upon selection.
+
+* **Custom Brand Identities**
+    * **Gemini Theme**: A deep-space aesthetic featuring Google’s signature blue-to-pink gradients and high-contrast dark surfaces.
+    * **Ollama Theme**: A focused, monochrome interface with cyan accents optimized for local-first workflows.
+    * **Claude Theme**: A warm, professional palette using Anthropic’s beige and cocoa tones for a clean, readable experience.
+
+* **User-Centric Appearance Settings**
+    * **In-App Customization**: A dedicated **Appearance** section added to the Settings tab, featuring a Brand Selector and Color Mode toggle.
+    * **Typography Overhaul**: Full support for **Google Sans** integration across the entire UI for a premium, modern feel.
+    * **Unified Navigation**: The sidebar and selection indicators now dynamically adapt their colors to match the active brand identity.
+
+* **Under-the-Hood Improvements**
+    * **Public Window Architecture**: Refactored `App.xaml.cs` to expose a public `MainWindow` property, enabling deep communication between settings pages and the core window shell.
+    * **Stable XAML Compilation**: Optimized resource dictionary handling to resolve previous `XamlCompiler.exe` limitations in the WinUI 3 build pipeline.
+
+---
+
 <p align="center">
   <img src="docs/logo.png" alt="Hermes Desktop Logo" width="128" />
 </p>
