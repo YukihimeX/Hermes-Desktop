@@ -9,80 +9,49 @@
             <ResourceDictionary.MergedDictionaries>
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="AppWindowBackgroundBrush" Color="#0F1318" />
-            <SolidColorBrush x:Key="AppPaneBackgroundBrush" Color="#141920" />
-            <SolidColorBrush x:Key="AppSurfaceBrush" Color="#1B2129" />
-            <SolidColorBrush x:Key="AppInsetBrush" Color="#11161C" />
-            <SolidColorBrush x:Key="AppPanelBrush" Color="#202731" />
-            <SolidColorBrush x:Key="AppStrokeBrush" Color="#2A313C" />
-            <SolidColorBrush x:Key="AppSubtleStrokeBrush" Color="#202731" />
-            <!-- Hermes gradient palette: caramel → goldenrod → golden yellow -->
-            <SolidColorBrush x:Key="AppAccentBrush" Color="#D4A017" />
-            <SolidColorBrush x:Key="AppAccentTextBrush" Color="#FFD700" />
-            <SolidColorBrush x:Key="AppTextSecondaryBrush" Color="#95A2B1" />
-            <SolidColorBrush x:Key="AppUserBubbleBrush" Color="#1E1A0A" />
-            <SolidColorBrush x:Key="AppHeroAccentBrush" Color="#FFD700" />
-            <SolidColorBrush x:Key="AppAccentDarkBrush" Color="#C68E17" />
-            <SolidColorBrush x:Key="AppOutlineBrush" Color="#3A3A00" />
-            <LinearGradientBrush x:Key="AppAccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
-                <GradientStop Color="#C68E17" Offset="0.0" />
-                <GradientStop Color="#D4A017" Offset="0.5" />
-                <GradientStop Color="#FFD700" Offset="1.0" />
-            </LinearGradientBrush>
-            <LinearGradientBrush x:Key="AppAccentGradientVerticalBrush" StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="#FFD700" Offset="0.0" />
-                <GradientStop Color="#D4A017" Offset="0.5" />
-                <GradientStop Color="#C68E17" Offset="1.0" />
-            </LinearGradientBrush>
-            <SolidColorBrush x:Key="ConnectionOnlineBrush" Color="#49C27D" />
-            <SolidColorBrush x:Key="ConnectionOfflineBrush" Color="#FF8A65" />
 
-            <Style x:Key="SurfaceCardStyle" TargetType="Border">
-                <Setter Property="Background" Value="{StaticResource AppSurfaceBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource AppSubtleStrokeBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="12" />
-                <Setter Property="Padding" Value="18" />
-            </Style>
-            <Style x:Key="InsetCardStyle" TargetType="Border">
-                <Setter Property="Background" Value="{StaticResource AppInsetBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource AppStrokeBrush}" />
-                <Setter Property="BorderThickness" Value="1" />
-                <Setter Property="CornerRadius" Value="10" />
-                <Setter Property="Padding" Value="14" />
-            </Style>
-            <Style x:Key="PageEyebrowTextStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="12" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Foreground" Value="{StaticResource AppAccentTextBrush}" />
-                <Setter Property="CharacterSpacing" Value="32" />
-                <Setter Property="TextWrapping" Value="Wrap" />
-            </Style>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="AppWindowBackgroundBrush" Color="#0B0B0B" />
+                    <SolidColorBrush x:Key="AppPaneBackgroundBrush" Color="#131314" />
+                    <SolidColorBrush x:Key="AppSurfaceBrush" Color="#1E1F20" />
+                    <SolidColorBrush x:Key="AppInsetBrush" Color="#1A1A1C" />
+                    <SolidColorBrush x:Key="AppStrokeBrush" Color="#444746" />
+                    <SolidColorBrush x:Key="AppAccentBrush" Color="#1A73E8" />
+                    <SolidColorBrush x:Key="AppTextSecondaryBrush" Color="#C4C7C5" />
+                    <LinearGradientBrush x:Key="AppAccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#4285F4" Offset="0.0" />
+                        <GradientStop Color="#9B72CB" Offset="0.5" />
+                        <GradientStop Color="#D96570" Offset="1.0" />
+                    </LinearGradientBrush>
+                </ResourceDictionary>
+                
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="AppWindowBackgroundBrush" Color="#F8F9FA" />
+                    <SolidColorBrush x:Key="AppPaneBackgroundBrush" Color="#F0F2F5" />
+                    <SolidColorBrush x:Key="AppSurfaceBrush" Color="#FFFFFF" />
+                    <SolidColorBrush x:Key="AppInsetBrush" Color="#F3F3F3" />
+                    <SolidColorBrush x:Key="AppStrokeBrush" Color="#D1D1D1" />
+                    <SolidColorBrush x:Key="AppAccentBrush" Color="#1A73E8" />
+                    <SolidColorBrush x:Key="AppTextSecondaryBrush" Color="#444746" />
+                    <LinearGradientBrush x:Key="AppAccentGradientBrush" StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#1A73E8" Offset="0.0" />
+                        <GradientStop Color="#4285F4" Offset="1.0" />
+                    </LinearGradientBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+
             <Style x:Key="PageTitleTextStyle" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Google Sans" />
                 <Setter Property="FontSize" Value="30" />
                 <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="TextWrapping" Value="Wrap" />
+                <Setter Property="Foreground" Value="{ThemeResource AppAccentBrush}" />
             </Style>
-            <Style x:Key="SectionTitleTextStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="18" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="TextWrapping" Value="Wrap" />
-            </Style>
-            <Style x:Key="BodySecondaryTextStyle" TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{StaticResource AppTextSecondaryBrush}" />
-                <Setter Property="TextWrapping" Value="Wrap" />
-            </Style>
-            <Style x:Key="LabelTextStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="11" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Foreground" Value="{StaticResource AppTextSecondaryBrush}" />
-                <Setter Property="CharacterSpacing" Value="20" />
-                <Setter Property="TextWrapping" Value="Wrap" />
-            </Style>
-            <Style x:Key="MetricValueTextStyle" TargetType="TextBlock">
-                <Setter Property="FontSize" Value="22" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="TextWrapping" Value="Wrap" />
+
+            <Style x:Key="SurfaceCardStyle" TargetType="Border">
+                <Setter Property="Background" Value="{ThemeResource AppSurfaceBrush}" />
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="Padding" Value="18" />
             </Style>
         </ResourceDictionary>
     </Application.Resources>
